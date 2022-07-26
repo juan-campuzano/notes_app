@@ -23,11 +23,15 @@ class SignInForm extends StatelessWidget {
                 ),
                 TextFormField(
                   decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.email), label: Text('Email')),
+                    prefixIcon: Icon(Icons.email),
+                    label: Text('Email'),
+                  ),
                   autocorrect: false,
-                  onChanged: (value) => context
-                      .read<SignInFormBloc>()
-                      .add(SignInFormEvent.emailChanged(value)),
+                  onChanged: (value) {
+                    context
+                        .read<SignInFormBloc>()
+                        .add(SignInFormEvent.emailChanged(value));
+                  },
                   validator: (_) => context
                       .read<SignInFormBloc>()
                       .state
@@ -44,7 +48,9 @@ class SignInForm extends StatelessWidget {
                 ),
                 TextFormField(
                   decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.lock), label: Text('Password')),
+                    prefixIcon: Icon(Icons.lock),
+                    label: Text('Password'),
+                  ),
                   autocorrect: false,
                   obscureText: true,
                   onChanged: (value) {
@@ -52,16 +58,14 @@ class SignInForm extends StatelessWidget {
                         .read<SignInFormBloc>()
                         .add(SignInFormEvent.passwordChanged(value));
                   },
-                  validator: (_) => context
-                      .read<SignInFormBloc>()
-                      .state
-                      .password
-                      .value
-                      .fold(
-                          (f) => f.maybeMap(
-                              shortPassword: ((value) => 'Short Password'),
-                              orElse: () => null),
-                          (_) => null),
+                  validator: (_) =>
+                      context.read<SignInFormBloc>().state.password.value.fold(
+                            (f) => f.maybeMap(
+                              shortPassword: ((value) => value.failedValue),
+                              orElse: () => null,
+                            ),
+                            (_) => null,
+                          ),
                 ),
                 const SizedBox(
                   height: 8,
