@@ -10,8 +10,9 @@ class SignInForm extends StatelessWidget {
     return BlocConsumer<SignInFormBloc, SignInFormState>(
         builder: (context, state) {
           return Form(
-            autovalidateMode: AutovalidateMode.always,
+            autovalidateMode: AutovalidateMode.disabled,
             child: ListView(
+              padding: const EdgeInsets.all(4.0),
               children: [
                 const Text(
                   "📝",
