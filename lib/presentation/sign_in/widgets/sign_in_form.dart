@@ -10,7 +10,7 @@ class SignInForm extends StatelessWidget {
     return BlocConsumer<SignInFormBloc, SignInFormState>(
         builder: (context, state) {
           return Form(
-            autovalidateMode: AutovalidateMode.disabled,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             child: ListView(
               padding: const EdgeInsets.all(4.0),
               children: [
@@ -29,9 +29,9 @@ class SignInForm extends StatelessWidget {
                   ),
                   autocorrect: false,
                   onChanged: (value) {
-                    context
-                        .read<SignInFormBloc>()
-                        .add(SignInFormEvent.emailChanged(value));
+                    context.read<SignInFormBloc>().add(
+                          SignInFormEvent.emailChanged(value),
+                        );
                   },
                   validator: (_) => context
                       .read<SignInFormBloc>()
@@ -39,10 +39,11 @@ class SignInForm extends StatelessWidget {
                       .emailAddress
                       .value
                       .fold(
-                          (f) => f.maybeMap(
-                              invalidEmail: ((value) => value.failedValue),
-                              orElse: () => null),
-                          (_) => null),
+                        (f) => f.maybeMap(
+                            invalidEmail: ((value) => value.failedValue),
+                            orElse: () => null),
+                        (_) => null,
+                      ),
                 ),
                 const SizedBox(
                   height: 8,
@@ -55,9 +56,9 @@ class SignInForm extends StatelessWidget {
                   autocorrect: false,
                   obscureText: true,
                   onChanged: (value) {
-                    context
-                        .read<SignInFormBloc>()
-                        .add(SignInFormEvent.passwordChanged(value));
+                    context.read<SignInFormBloc>().add(
+                          SignInFormEvent.passwordChanged(value),
+                        );
                   },
                   validator: (_) =>
                       context.read<SignInFormBloc>().state.password.value.fold(
@@ -78,8 +79,9 @@ class SignInForm extends StatelessWidget {
                         child: const Text("Sign in"),
                         onPressed: () {
                           context.read<SignInFormBloc>().add(
-                              const SignInFormEvent
-                                  .signInWithEmailAndPasswordPressed());
+                                const SignInFormEvent
+                                    .signInWithEmailAndPasswordPressed(),
+                              );
                         },
                       ),
                     ),
@@ -88,8 +90,9 @@ class SignInForm extends StatelessWidget {
                         child: const Text("Register"),
                         onPressed: () {
                           context.read<SignInFormBloc>().add(
-                              const SignInFormEvent
-                                  .registerWithEmailAndPasswordPressed());
+                                const SignInFormEvent
+                                    .registerWithEmailAndPasswordPressed(),
+                              );
                         },
                       ),
                     )
@@ -98,9 +101,9 @@ class SignInForm extends StatelessWidget {
                 ElevatedButton(
                   child: const Text("Sign in with google"),
                   onPressed: () {
-                    context
-                        .read<SignInFormBloc>()
-                        .add(const SignInFormEvent.signInWithGooglePressed());
+                    context.read<SignInFormBloc>().add(
+                          const SignInFormEvent.signInWithGooglePressed(),
+                        );
                   },
                 )
               ],
